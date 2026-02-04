@@ -15,7 +15,7 @@ The app is deployed to **Google Cloud Run** on every push to `main` via GitHub A
    - Enable APIs: **Cloud Run**, **Artifact Registry**, **Container Registry** (if needed).
 
 2. **Artifact Registry**
-   - Create a repository (e.g. `build-ui`) in Artifact Registry (Docker format) in your chosen region (e.g. `us-central1`).
+   - Create a repository (e.g. `buildui`) in Artifact Registry (Docker format) in your chosen region (e.g. `us-central1`).
 
 3. **Service account for GitHub Actions**
    - In GCP: IAM & Admin → Service Accounts → Create.
@@ -31,7 +31,35 @@ The app is deployed to **Google Cloud Run** on every push to `main` via GitHub A
    | Variable | `GCP_PROJECT_ID`       | Your GCP project ID (e.g. `my-project-123`). |
    | Variable | `GCP_REGION` (optional) | Cloud Run + Artifact Registry region. Default: `us-central1`. |
    | Variable | `CLOUD_RUN_SERVICE_NAME` (optional) | Cloud Run service name. Default: `build-ui`. |
-   | Variable | `ARTIFACT_REGISTRY_REPO` (optional) | Artifact Registry repo name. Default: `build-ui`. |
+   | Variable | `ARTIFACT_REGISTRY_REPO` (optional) | Artifact Registry repo name. Default: `buildui`. |
+
+### Fix: "Permission 'artifactregistry.repositories.uploadArtifacts' denied"
+
+This means the service account can’t push images. Do both:
+
+1. **Create the Artifact Registry repo** (if it doesn’t exist):
+   - In GCP: **Artifact Registry** → **Create repository** → name `buildui`, format **Docker**, region e.g. `us-central1`.
+
+   Or with gcloud (set `PROJECT_ID` and `REGION`):
+   ```bash
+   gcloud artifacts repositories create buildui \
+     --repository-format=docker \
+     --location=us-central1 \
+     --project=YOUR_PROJECT_ID
+   ```
+
+2. **Grant the service account permission to push**  
+   In **IAM & Admin** → **IAM**, find the service account you use for GitHub (the one whose key is in `GCP_SA_KEY`) and add:
+   - **Artifact Registry Writer** (`roles/artifactregistry.writer`)
+
+   Or with gcloud (replace `YOUR_PROJECT_ID` and `SA_EMAIL`, e.g. `github-actions@chromatic-486315.iam.gserviceaccount.com`):
+   ```bash
+   gcloud projects add-iam-policy-binding YOUR_PROJECT_ID \
+     --member="serviceAccount:SA_EMAIL" \
+     --role="roles/artifactregistry.writer"
+   ```
+
+   Also ensure the repo exists in the same region as the workflow (e.g. `us-central1`).
 
 ### Production-ready notes
 
@@ -39,8 +67,7 @@ The app is deployed to **Google Cloud Run** on every push to `main` via GitHub A
 - **Docker** builds from `Dockerfile` and serves the Vite production build on port **8080** (Cloud Run default).
 - **Cloud Run** is configured with:
   - `--min-instances 0` (scale to zero when idle).
-  - `--max-instances 10` (adjust in the workflow if needed).
-  - `--memory 512Mi` (increase in the workflow for heavier builds if needed).
+  - `--max-instances 1`, `--memory 256Mi` (low for learning; increase in the workflow if needed).
 - To require auth, remove `--allow-unauthenticated` from the “Deploy to Cloud Run” step and use IAM to control who can invoke the service.
 - For custom domains or HTTPS-only, configure **Cloud Run** (or a load balancer) in the GCP console.
 
