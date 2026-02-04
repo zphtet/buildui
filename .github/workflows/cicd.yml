@@ -1,0 +1,21 @@
+name : CI/CD React - Vite - Github Actions - CloudRun
+
+on:
+   push : 
+        branches : 
+               - main
+
+jobs:
+    build-and-deploy : 
+        name : Build and Deploy
+        runs-on: unbuntu-latest
+
+        steps:
+          - name : Checkout Source Code
+            uses : actions/checkout@v4
+    
+          
+        
+ 
+    
+ 
