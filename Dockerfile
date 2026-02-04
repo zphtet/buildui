@@ -16,8 +16,9 @@ COPY . .
 # Build the React app
 RUN npm run build
 
-# Expose the port that the server will listen on
-EXPOSE 5173
+# Cloud Run uses PORT env (default 8080)
+ENV PORT=8080
+EXPOSE 8080
 
-# Start the application
-CMD [ "npm", "run", "start" ]
+# Serve production build (not dev server)
+CMD [ "npm", "run", "serve" ]
