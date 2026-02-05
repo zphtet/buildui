@@ -37,7 +37,7 @@ env:
 
 jobs:
   build-and-deploy:
-    name: Build and Deploy (${{ env.DEPLOY_ENV }})
+    name: Build and Deploy (${{ inputs.environment }})
     runs-on: ubuntu-latest
     permissions:
       contents: read
