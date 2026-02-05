@@ -6,6 +6,6 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   preview: {
-    allowedHosts: ['build-ui-896613273388.us-central1.run.app','https://build-ui-dev-896613273388.us-central1.run.app','https://build-ui-staging-896613273388.us-central1.run.app', '*']
+    allowedHosts: ['build-ui-896613273388.us-central1.run.app','build-ui-dev-896613273388.us-central1.run.app','build-ui-staging-896613273388.us-central1.run.app', '*']
   }
 })
