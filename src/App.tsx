@@ -11,7 +11,8 @@ const App = () => {
   return (
     <div className="p-5">
       <div className="w-full flex items-center justify-center my-5" >
-        <h1 className="text-3xl text-blue-400 font-bold underline">Build Reusable UI Components (prod)</h1>
+        <h1 className="text-3xl text-blue-400 font-bold underline">Build Reusable UI Components (dev)</h1>
+
       </div>
       <p> url : {url}</p>
       <Button className="bg-amber-300 rounded-sm px-5 py-2 hover:opacity-80 cursor-pointer" onClick={() => alert("hello world")}>
