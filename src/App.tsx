@@ -14,7 +14,7 @@ const App = () => {
         <h1 className="text-3xl text-blue-400 font-bold underline">Build Reusable UI Components (dev)</h1>
 
       </div>
-      <p>{url}</p>
+      <p> url : {url}</p>
       <Button className="bg-amber-300 rounded-sm px-5 py-2 hover:opacity-80 cursor-pointer" onClick={() => alert("hello world")}>
         this is button
       </Button>
