@@ -1,0 +1,19 @@
+name: Deploy to Cloud Run (dev)
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  deploy:
+    uses: ./.github/workflows/cicd.yml
+    with:
+      gcp-project-id: ${{ vars.GCP_PROJECT_ID }}
+      gcp-region: ${{ vars.GCP_REGION || 'us-central1' }}
+      service-name: ${{ vars.CLOUD_RUN_SERVICE_NAME_DEV || 'build-ui-dev' }}
+      artifact-registry-repo: ${{ vars.ARTIFACT_REGISTRY_REPO || 'buildui' }}
+      environment: dev
+    secrets:
+      gcp-sa-key: ${{ secrets.GCP_SA_KEY }}
+
