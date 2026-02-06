@@ -60,6 +60,10 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      - name: Debug VITE_API_URL from GitHub Environment
+        run: |
+          echo "VITE_API_URL is: ${{ vars.VITE_API_URL }}"
+
       - name: Build Vite application
         run: npm run build
         env:

@@ -8,6 +8,7 @@ const imgAddr = "https://images.pexels.com/photos/17791448/pexels-photo-17791448
 const imgAddr2 = "https://images.pexels.com/photos/15865635/pexels-photo-15865635/free-photo-of-empty-street-in-old-town-in-wroclaw.jpeg?auto=compress&cs=tinysrgb&h=400&fit=crop&crop=focalpoint&dpr=1"
 const App = () => {
   const url = import.meta.env.VITE_API_URL;
+  console.log("VITE_API_URL at build:", url);
   return (
     <div className="p-5">
       <div className="w-full flex items-center justify-center my-5" >
