@@ -1,6 +1,10 @@
 # Use an official Node.js runtime as the base image
 FROM node:20-alpine
 
+# Build-time API URL (injected from GitHub Actions)
+ARG VITE_API_URL
+ENV VITE_API_URL=${VITE_API_URL}
+
 # Set the working directory in the container
 WORKDIR /app
 
@@ -13,7 +17,7 @@ RUN npm install --force
 # Copy the rest of the project files to the container
 COPY . .
 
-# Build the React app
+# Build the React app with Vite using VITE_API_URL
 RUN npm run build
 
 # Cloud Run uses PORT env (default 8080)
