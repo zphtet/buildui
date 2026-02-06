@@ -39,6 +39,7 @@ jobs:
   build-and-deploy:
     name: Build and Deploy (${{ inputs.environment }})
     runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }} 
     permissions:
       contents: read
       id-token: write
